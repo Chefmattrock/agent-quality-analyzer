@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+*.env
+.env.local
+.env.production
+.env.staging
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.cursor/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Data files
+data/*.db
+data/*.bak  
+data/*.sqlite
+data/*.sqlite3
+data/*.db-journal
+data/*.sqlite-journal
+data/*.sqlite3-journal
+data/*.log
+data/*.csv
+data/*.json
+data/*.txt
+!data/.gitkeep  # Keep the directory in git but ignore its contents 
+
+# Scratchpad and temporary files
+scratch.json
+test_transcript.txt
+corrected_results.txt
+*.tmp
+*.temp
+
+# Backups
+*.bak
+*~
+
+# Logs
+*.log
+logs/
+
+# Output files that contain data
+*_agents.csv
+*_summary.csv
+*_agent_ids.csv
+*_exclusion_list.csv
+*_found.csv
+*_results.txt
