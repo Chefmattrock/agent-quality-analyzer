@@ -43,8 +43,8 @@ agent_quality_analyzer/
 ## Key Analysis Scripts
 
 ### Grant Program Builders Analysis
-- `src/list_301_analysis.py` - Main analysis of Grant Program Builders (HubSpot list 301)
-- `src/list_301_analysis_fixed.py` - Fixed version with corrected review scoring (excludes 0-review agents)
+- `src/grant_program_analysis.py` - Main analysis of Grant Program Builders (HubSpot list 301)
+- `src/grant_program_analysis_fixed.py` - Fixed version with corrected review scoring (excludes 0-review agents)
 
 ### Traffic Analysis  
 - `src/find_paid_traffic_agents.py` - Identifies agents that received paid traffic
@@ -64,7 +64,7 @@ agent_quality_analyzer/
 
 ### Analyze Grant Program Builders
 ```bash
-python src/list_301_analysis_fixed.py
+python src/grant_program_analysis_fixed.py
 ```
 
 ### Find agents with paid traffic
@@ -98,7 +98,7 @@ All data files are stored in the `data/` directory and are excluded from git for
 - No sensitive tokens or keys should be hardcoded in scripts
 
 ⚠️ **Review Scoring Fix**
-- Use `list_301_analysis_fixed.py` for accurate review calculations
+- Use `grant_program_analysis_fixed.py` for accurate review calculations
 - This version excludes agents with 0 reviews from average calculations
 - Original version incorrectly included 0-review agents as 0.0 ratings
 

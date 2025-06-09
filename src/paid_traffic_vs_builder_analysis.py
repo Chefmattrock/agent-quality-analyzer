@@ -36,7 +36,7 @@ def analyze_paid_traffic_vs_builder():
     columns = [column[1] for column in cursor.fetchall()]
     
     if 'builder_grant_program' not in columns:
-        print("❌ builder_grant_program column not found. Run list_301_analysis.py first.")
+        print("❌ builder_grant_program column not found. Run grant_program_analysis.py first.")
         conn.close()
         return
     
