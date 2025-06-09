@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 import sqlite3
 
+# This script pulls public agents from agent.ai through the API and adds them to a local database agents.db
+
 # Load environment variables from .env file
 project_root = os.path.dirname(os.path.dirname(__file__))
 env_path = os.path.abspath(os.path.join(project_root, '.env'))

@@ -57,7 +57,7 @@ agent_quality_analyzer/
 
 ### Utility Scripts
 - `src/user_builds.py` - Look up agents by user token
-- `src/agent_finder.py` - Find and analyze specific agents
+- `src/pull_public_agents.py` - Find and analyze specific agents
 - `src/refresh_data.py` - Refresh agent data from API
 
 ## Usage Examples

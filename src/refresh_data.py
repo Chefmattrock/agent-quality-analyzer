@@ -84,7 +84,7 @@ def main():
     try:
         # Step 1: Fetch public agents
         success = run_command(
-            ['python', 'agent_finder.py', '-p', 'public', '-n', '100'],
+            ['python', 'pull_public_agents.py', '-p', 'public', '-n', '100'],
             "Fetching public agents from agent.ai API"
         )
         
