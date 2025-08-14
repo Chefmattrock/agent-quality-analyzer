@@ -36,7 +36,7 @@ HUB_API_KEY = os.getenv('HUB_API_KEY')
 
 def add_builder_grant_program_column():
     """Add builder_grant_program column to agents table if it doesn't exist."""
-    db_path = 'data/agents.db' if os.path.exists('data/agents.db') else '../data/agents.db'
+    db_path = 'data/agents.db'
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
@@ -56,7 +56,7 @@ def add_builder_grant_program_column():
 
 def mark_grant_program_agents(agent_ids):
     """Mark Grant Program Builder agents in the database with builder_grant_program = 1."""
-    db_path = 'data/agents.db' if os.path.exists('data/agents.db') else '../data/agents.db'
+    db_path = 'data/agents.db'
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
@@ -147,11 +147,8 @@ def get_user_agents_detailed(user_token, db_path=None):
     """Get all agents authored by a specific user token with full details."""
     # Determine the correct database path
     if db_path is None:
-        if os.path.exists('../data/agents.db'):
-            db_path = '../data/agents.db'
-        elif os.path.exists('data/agents.db'):
-            db_path = 'data/agents.db'
-        else:
+        db_path = 'data/agents.db'
+        if not os.path.exists(db_path):
             print("Error: Cannot find agents.db database")
             return []
     
@@ -251,7 +248,7 @@ def main():
         print(f"\n[{i}/{len(contacts)}] Analyzing {email} ({user_token})")
         
         # Get all agents (before filtering)
-        db_path = 'data/agents.db' if os.path.exists('data/agents.db') else '../data/agents.db'
+        db_path = 'data/agents.db'
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         cursor.execute("""
@@ -335,7 +332,7 @@ def main():
     print(f"\n📁 Exporting data...")
     
     # Determine output directory based on current working directory
-    output_dir = '.' if os.path.exists('data/agents.db') else '..'
+    output_dir = 'data'
     
     # Export all agents
     agents_df = pd.DataFrame(all_agents)

@@ -62,6 +62,8 @@ agent_quality_analyzer/
 
 ## Usage Examples
 
+**All scripts should be run from the root directory:**
+
 ### Analyze Grant Program Builders
 ```bash
 python src/grant_program_analysis_fixed.py
@@ -80,6 +82,16 @@ python src/three_group_comparison.py
 ### Look up agents by user
 ```bash
 python src/user_builds.py -u <user_token>
+```
+
+### Find agents created after a specific date
+```bash
+python src/agents_after_june3_query.py 2024 --csv data/june_agents.csv
+```
+
+### Refresh local data
+```bash
+python src/refresh_local_data.py
 ```
 
 ## Data Files

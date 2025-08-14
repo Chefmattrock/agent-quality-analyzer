@@ -3,7 +3,7 @@ import os
 import sqlite3
 
 # Connect to database
-db_path = 'data/agents.db' if os.path.exists('data/agents.db') else '../data/agents.db'
+db_path = 'data/agents.db'
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 

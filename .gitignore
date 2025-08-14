@@ -60,6 +60,7 @@ data/*.log
 data/*.csv
 data/*.json
 data/*.txt
+data/*.tsv
 !data/.gitkeep  # Keep the directory in git but ignore its contents 
 
 # Scratchpad and temporary files

@@ -27,7 +27,7 @@ def analyze_paid_traffic_vs_builder():
     paid_traffic_ids = set(paid_traffic_df['agent_id'].tolist())
     
     # Connect to database
-    db_path = 'data/agents.db' if os.path.exists('data/agents.db') else '../data/agents.db'
+    db_path = 'data/agents.db'
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     

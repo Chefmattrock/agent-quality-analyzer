@@ -6,6 +6,7 @@ from typing import Dict, Any, Optional, List, Tuple
 from dotenv import load_dotenv
 from datetime import datetime
 import sqlite3
+from pathlib import Path
 
 # This script pulls public agents from agent.ai through the API and adds them to a local database agents.db
 
@@ -165,7 +166,12 @@ class AgentAIClient:
             for user_token, info in authors.items()
         ]
 
-def initialize_agents_db(db_path='data/agents.db'):
+def initialize_agents_db(db_path=None):
+    if db_path is None:
+        # Always use the project root data directory
+        script_dir = Path(__file__).parent.absolute()
+        project_root = script_dir.parent
+        db_path = str(project_root / 'data' / 'agents.db')
     """
     Initialize the agents SQLite database and create the agents table if it doesn't exist.
     """
@@ -207,17 +213,12 @@ def main():
         description='Search and discover agents from agent.ai',
         formatter_class=argparse.RawTextHelpFormatter
     )
-    parser.add_argument('-p', '--status', default='public', help='Agent status (e.g., "public")')
+    parser.add_argument('-p', '--status', default='public', help='Agent status (default: "public", use "private" for private agents)')
     parser.add_argument('-t', '--tag', help='Filter by tag (e.g., "Marketing", "Sales")')
     parser.add_argument('-n', '--limit', type=int, default=10, help='Number of results to return (max 100)')
     parser.add_argument('-o', '--offset', type=int, default=0, help='Number of results to skip')
 
-    # If no arguments are provided, print help and exit
-    import sys
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(0)
-    
+    # Parse arguments
     args = parser.parse_args()
     
     try:
@@ -241,50 +242,63 @@ def main():
             print(f"Parsed {len(agents)} agents")
             
             # Insert agents into the database
-            conn = sqlite3.connect('data/agents.db')
+            # Always use the project root data directory
+            script_dir = Path(__file__).parent.absolute()
+            project_root = script_dir.parent
+            db_path = str(project_root / 'data' / 'agents.db')
+            conn = sqlite3.connect(db_path)
             c = conn.cursor()
             for agent in response.get('response', []):
                 # Convert date fields to ISO 8601
                 def to_iso8601(dt_str):
                     try:
                         dt = datetime.strptime(dt_str, "%a, %d %b %Y %H:%M:%S %Z")
-                        return dt.strftime("%Y-%m-%d %H:%M:%S")
-                    except Exception:
-                        return dt_str or None
-                created_at = to_iso8601(agent.get('created_at'))
-                updated_at = to_iso8601(agent.get('updated_at'))
-                # Store lists/objects as JSON strings
-                tags = json.dumps(agent.get('tags', []))
-                invoke_agent_input = json.dumps(agent.get('invoke_agent_input', []))
-                authors = json.dumps(agent.get('authors', {}))
-                c.execute('''
-                    INSERT OR REPLACE INTO agents (
-                        agent_id, agent_id_human, approximate_time, authors, created_at, description, executions, featured_at, icon, invoke_agent_input, is_approved, name, price, reviews_count, reviews_score, status, tags, type, updated_at
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
+                        return dt.isoformat()
+                    except (ValueError, TypeError):
+                        return None
+
+                # Convert dicts and lists to JSON strings
+                authors_json = json.dumps(agent.get('authors', {}))
+                tags_json = json.dumps(agent.get('tags', []))
+                invoke_agent_input_json = json.dumps(agent.get('invoke_agent_input', {}))
+
+                # Prepare the data for insertion
+                data = (
                     agent.get('agent_id'),
                     agent.get('agent_id_human'),
                     agent.get('approximate_time'),
-                    authors,
-                    created_at,
+                    authors_json,
+                    to_iso8601(agent.get('created_at')),
                     agent.get('description'),
-                    agent.get('executions'),
-                    agent.get('featured_at'),
+                    agent.get('executions', 0),
+                    to_iso8601(agent.get('featured_at')),
                     agent.get('icon'),
-                    invoke_agent_input,
-                    int(agent.get('is_approved', False)),
+                    invoke_agent_input_json,
+                    1 if agent.get('is_approved') else 0,
                     agent.get('name'),
                     agent.get('price'),
-                    agent.get('reviews_count'),
-                    agent.get('reviews_score'),
+                    agent.get('reviews_count', 0),
+                    agent.get('reviews_score', 0),
                     agent.get('status'),
-                    tags,
+                    tags_json,
                     agent.get('type'),
-                    updated_at
-                ))
+                    to_iso8601(agent.get('updated_at'))
+                )
+
+                # Insert or update the agent
+                c.execute('''
+                    INSERT OR REPLACE INTO agents (
+                        agent_id, agent_id_human, approximate_time, authors,
+                        created_at, description, executions, featured_at,
+                        icon, invoke_agent_input, is_approved, name,
+                        price, reviews_count, reviews_score, status,
+                        tags, type, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', data)
+
             conn.commit()
             conn.close()
-            print(f"{len(agents)} agents found and added to the database.")
+            print(f"Successfully updated {len(response.get('response', []))} agents in the database")
         else:
             print("No agents found in the response")
             

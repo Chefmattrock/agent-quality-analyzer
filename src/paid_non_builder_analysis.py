@@ -19,7 +19,7 @@ import pandas as pd
 def analyze_paid_non_builder_agents():
     """Analyze paid agents that are not part of the builder program."""
     # Determine the correct database path
-    db_path = 'data/agents.db' if os.path.exists('data/agents.db') else '../data/agents.db'
+    db_path = 'data/agents.db'
     
     if not os.path.exists(db_path):
         print("Error: Cannot find agents.db database")
