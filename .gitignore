@@ -61,6 +61,12 @@ data/*.csv
 data/*.json
 data/*.txt
 data/*.tsv
+data/*.html
+data/*.md
+data/*.py
+data/agent_actions
+data/agents
+data/agents-may
 !data/.gitkeep  # Keep the directory in git but ignore its contents 
 
 # Scratchpad and temporary files
