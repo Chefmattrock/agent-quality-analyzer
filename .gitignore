@@ -91,3 +91,11 @@ logs/
 *_exclusion_list.csv
 *_found.csv
 *_results.txt
+
+# Files with PII that should not be committed
+fix_outreach_csv.py
+create_outreach_list.py
+enhanced_outreach_list.py
+enrich_outreach_builders.py
+top_builders.py
+missing_emails.py
