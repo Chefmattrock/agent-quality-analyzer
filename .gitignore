@@ -63,6 +63,7 @@ data/*.txt
 data/*.tsv
 data/*.html
 data/*.md
+data/top_agents_by_executions.md
 data/*.py
 data/agent_actions
 data/agents
